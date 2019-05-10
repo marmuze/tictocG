@@ -1,19 +1,17 @@
 <template>
   <div>
-    <li >Number of part: {{nbParties}}</li>
-    <li >Number of check: {{nbCoupMoy}}</li>
-    <li >Number of draw : {{nbDraw}}</li>
-    <li >Number of X win:  {{nbPlayerWin("X")}}</li>
-      <li >Number of O win: {{nbPlayerWin("O")}}</li>
+    <div class="alert alert-primary">Number of part: {{nbParties}}</div>
+    <div class="alert alert-primary">Number of check: {{nbCoupMoy}}</div>
+    <div class="alert alert-primary">Number of draw : {{nbDraw}}</div>
+    <div class="alert alert-primary">Number of X win: {{nbPlayerWin("X")}}</div>
+    <div class="alert alert-primary">Number of O win: {{nbPlayerWin("O")}}</div>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-  
-    };
+    return {};
   },
   computed: {
     nbParties() {
@@ -30,8 +28,8 @@ export default {
     }
   },
   methods: {
-    nbPlayerWin(player){
-          return this.$store.getters.recupNbPlayerWin(player);
+    nbPlayerWin(player) {
+      return this.$store.getters.recupNbPlayerWin(player);
     }
   },
   created() {

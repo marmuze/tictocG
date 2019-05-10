@@ -2,28 +2,25 @@
   <div>
     <div id="welcome" v-if="!started">
       <div class="titleBlock">
-        <h1>
-          tictactoe Georges 
-        </h1>
-        <stat-tic-toc/>
-         <form @submit.prevent>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Player X"
-                       v-model="player.x">
-            </div>
-             <div class="form-group">
-                <input type="text" class="form-control"  placeholder="Player O"
-                       v-model="player.o">
-            </div>
+        <h1>tictactoe Georges</h1>
+        <form @submit.prevent>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Player X" v-model="player.X">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Player O" v-model="player.O">
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary" @click="init()">Play</button>
+          </div>
         </form>
-        <div class="row col-md-12" @click="init()">
-          Play
-        </div>
+
+        <stat-tic-toc/>
       </div>
     </div>
 
     <div id="main" v-if="started && !game.over">
-      {{player[turn] || turn }} play;
+      <div  class="alert alert-success">Your turn : {{player[turn] || turn }} </div>
       <table id="board">
         <tr v-for="(row,i) in board" :key="i">
           <td v-for="(box,j) in row" :key="j">
@@ -41,9 +38,9 @@
         <h1 v-if="game.draw">
           <span>draw stay good friends</span>
         </h1>
-        <div class="row" @click="init()">
-         <h2>play again?</h2>
-        </div>
+         <div class="form-group">
+        <button class="btn btn-primary " @click="init()">Play Again?</button>
+         </div>
         <stat-tic-toc/>
       </div>
     </div>
@@ -51,19 +48,18 @@
 </template>
 
 <script>
-
 import StatTicToc from "./StatTicToc.vue";
 export default {
-  components: {  StatTicToc},
+  components: { StatTicToc },
   data() {
     return {
       started: false,
       showModal: false,
       run: false,
       turn: "X",
-      player:{
-        x:"",
-        o:""
+      player: {
+        X: "",
+        O: ""
       },
       game: {
         over: false,
@@ -87,10 +83,10 @@ export default {
         [[0, 0], [1, 1], [2, 2]],
         [[0, 2], [1, 1], [2, 0]]
       ],
-      partieStat:{
-        nbcoup:0,
-        draw:false,
-        win:""
+      partieStat: {
+        nbcoup: 0,
+        draw: false,
+        win: ""
       }
     };
   },
@@ -104,32 +100,32 @@ export default {
     }
   },
   methods: {
-      /**
-       * initialisation du jeu
-       */
+    /**
+     * initialisation du jeu
+     */
     init() {
       this.reset();
       this.start();
     },
     /**
-     * démarrage 
+     * démarrage
      */
     start() {
       this.run = true;
       this.started = true;
     },
-/**
- * remise des valeur par défaut pour nettoyer le jeu précedent
- */
+    /**
+     * remise des valeur par défaut pour nettoyer le jeu précedent
+     */
     reset() {
       this.run = false;
       this.game.over = false;
       this.game.winner = "";
       this.game.draw = false;
-      this.turn="X";
-      this.partieStat.nbcoup=0;
-      this.partieStat.draw=false;
-      this.partieStat.win="";
+      this.turn = "X";
+      this.partieStat.nbcoup = 0;
+      this.partieStat.draw = false;
+      this.partieStat.win = "";
 
       this.board.forEach(x => {
         x.map(y => {
@@ -138,12 +134,12 @@ export default {
         });
       });
     },
-  /**
- * fonction qui écrit dans la case si autorisé et vérifie si ce coup fait gagner
- */
+    /**
+     * fonction qui écrit dans la case si autorisé et vérifie si ce coup fait gagner
+     */
     mark(box) {
       if (box.val == "" && this.run) {
-        this.partieStat.nbcoup+=1;
+        this.partieStat.nbcoup += 1;
         box.val = this.turn;
         this.turn = this.turn == "X" ? "O" : "X";
         this.check();
@@ -162,17 +158,17 @@ export default {
         let over = false;
 
         if (x.every(y => y == "X")) {
-          this.game.winner = this.player.x || "X";
+          this.game.winner = this.player.X || "X";
           over = true;
         }
 
         if (x.every(y => y == "O")) {
-          this.game.winner = this.player.o ||"O";
+          this.game.winner = this.player.O || "O";
           over = true;
         }
 
         if (draw) {
-          this.partieStat.draw=true;
+          this.partieStat.draw = true;
           this.game.draw = true;
           over = true;
         }
@@ -189,7 +185,7 @@ export default {
      */
     setWin(vector) {
       if (!this.game.draw) {
-        this.partieStat.win=this.game.winner;
+        this.partieStat.win = this.game.winner;
         vector.forEach(x => {
           this.board[x[0]][x[1]].bg = "active";
         });
@@ -199,8 +195,8 @@ export default {
         this.game.over = true;
       }, 500);
     },
-    savePartie(){
-        this.$store.dispatch('savePartie',this.partieStat)
+    savePartie() {
+      this.$store.dispatch("savePartie", this.partieStat);
     }
   }
 };
@@ -223,7 +219,11 @@ export default {
 .square :active {
   background: rgb(173, 119, 224);
 }
-.row{
-  cursor:pointer;
+.row {
+  cursor: pointer;
+  display:inline-block;
+}
+.titleBlock{
+  text-align: center;
 }
 </style>
